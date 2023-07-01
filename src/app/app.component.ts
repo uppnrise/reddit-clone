@@ -18,6 +18,9 @@ export class AppComponent {
     return false;
   }
 
+  sortedArticles(): Article[] {
+    return this.articles.sort(((a, b) => b.votes - a.votes));
+  }
 
   constructor() {
     this.articles = [
