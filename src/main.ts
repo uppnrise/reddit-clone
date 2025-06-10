@@ -9,5 +9,5 @@ if (environment.production) {
 bootstrapApplication(AppComponent, {
   providers: [
     // Add providers here as needed
-  ]
-}).catch(err => console.error(err));
+  ],
+}).catch((err) => console.error(err));
