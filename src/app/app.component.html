@@ -3,11 +3,11 @@
 
   <div class="field">
     <label for="title">Title:</label>
-    <input name="title" id="title" #newTitle>
+    <input name="title" id="title" #newTitle />
   </div>
   <div class="field">
     <label for="link">Link:</label>
-    <input name="link" id="link" #newLink>
+    <input name="link" id="link" #newLink />
   </div>
 
   <button (click)="addArticle(newTitle, newLink)" class="ui positive right floated button">
@@ -17,8 +17,6 @@
 
 <div class="ui grid posts">
   @for (article of sortedArticles(); track article) {
-    <app-article
-      [article]="article">
-    </app-article>
+    <app-article [article]="article"> </app-article>
   }
 </div>
