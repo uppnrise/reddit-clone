@@ -1,32 +1,30 @@
-import {Component, HostBinding, Input, OnInit} from '@angular/core';
+import {Component, HostBinding, input, OnInit} from '@angular/core';
 import {Article} from "./article.model";
 
 @Component({
-    selector: 'app-article',
-    templateUrl: './article.component.html',
-    styleUrls: ['./article.component.css'],
-    standalone: false
+  selector: 'app-article',
+  templateUrl: './article.component.html',
+  styleUrls: ['./article.component.css'],
+  standalone: true
 })
 export class ArticleComponent implements OnInit {
 
   @HostBinding('attr.class')
   cssClass = 'row';
 
-  @Input()
-  article!: Article;
+  article = input.required<Article>();
 
   constructor() {
-    // at this moment article is populated with an input
-    // no need to do any op here.
+    // No need for operations here anymore with signals
   }
 
   voteUp(): boolean {
-    this.article.voteUp();
+    this.article().voteUp();
     return false;
   }
 
   voteDown(): boolean {
-    this.article.voteDown();
+    this.article().voteDown();
     return false;
   }
 
