@@ -25,10 +25,10 @@ export class Article {
   domain(): string | null {
     try {
       const domainAndPath: string = this.link.split('//')[1];
-      return domainAndPath.split('/')[0];
-    } catch (err) {
+      const domain = domainAndPath.split('/')[0];
+      return domain || null;
+    } catch {
       return null;
     }
   }
-
 }
