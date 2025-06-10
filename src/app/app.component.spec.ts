@@ -66,4 +66,51 @@ describe('AppComponent', () => {
     const articleElements = fixture.debugElement.queryAll(By.css('app-article'));
     expect(articleElements.length).toBe(3);
   });
+
+  it('should handle vote changes and maintain sorting', () => {
+    const initialArticles = component.articles();
+    const articleToVote = initialArticles[2]; // Angular Homepage (1 vote)
+    
+    // Vote up the lowest voted article
+    component.voteForArticle(articleToVote, 1);
+    
+    // Check that the article was updated
+    const updatedArticles = component.articles();
+    const updatedArticle = updatedArticles.find(a => a.title === 'Angular Homepage');
+    expect(updatedArticle?.votes).toBe(2);
+    
+    // Check that sorting is maintained
+    const sortedArticles = component.sortedArticles();
+    expect(sortedArticles[0].votes).toBeGreaterThanOrEqual(sortedArticles[1].votes);
+    expect(sortedArticles[1].votes).toBeGreaterThanOrEqual(sortedArticles[2].votes);
+  });
+
+  it('should handle vote down', () => {
+    const initialArticles = component.articles();
+    const articleToVote = initialArticles[0]; // Angular (3 votes)
+    
+    // Vote down the highest voted article
+    component.voteForArticle(articleToVote, -1);
+    
+    // Check that the article was updated
+    const updatedArticles = component.articles();
+    const updatedArticle = updatedArticles.find(a => a.title === 'Angular');
+    expect(updatedArticle?.votes).toBe(2);
+  });
+
+  it('should create new article instances when voting', () => {
+    const initialArticles = component.articles();
+    const originalArticle = initialArticles[0];
+    
+    component.voteForArticle(originalArticle, 1);
+    
+    const updatedArticles = component.articles();
+    const updatedArticle = updatedArticles[0];
+    
+    // Should be a new instance (immutable update)
+    expect(updatedArticle).not.toBe(originalArticle);
+    expect(updatedArticle.title).toBe(originalArticle.title);
+    expect(updatedArticle.link).toBe(originalArticle.link);
+    expect(updatedArticle.votes).toBe(originalArticle.votes + 1);
+  });
 });

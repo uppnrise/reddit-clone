@@ -1,4 +1,4 @@
-import { Component, HostBinding, input, ChangeDetectionStrategy, inject, ChangeDetectorRef } from '@angular/core';
+import { Component, HostBinding, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { Article } from './article.model';
 
 @Component({
@@ -13,18 +13,15 @@ export class ArticleComponent {
   cssClass = 'row';
 
   article = input.required<Article>();
-
-  private readonly cdr = inject(ChangeDetectorRef);
+  voteChange = output<{ article: Article; delta: number }>();
 
   voteUp(): boolean {
-    this.article().voteUp();
-    this.cdr.markForCheck(); // Manually trigger change detection
+    this.voteChange.emit({ article: this.article(), delta: 1 });
     return false;
   }
 
   voteDown(): boolean {
-    this.article().voteDown();
-    this.cdr.markForCheck(); // Manually trigger change detection
+    this.voteChange.emit({ article: this.article(), delta: -1 });
     return false;
   }
 }

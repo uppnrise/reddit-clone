@@ -40,24 +40,33 @@ describe('ArticleComponent', () => {
     expect(component.cssClass).toBe('row');
   });
 
-  it('should vote up', () => {
-    const initialVotes = testArticle.votes;
+  it('should emit voteChange event when voteUp is called', () => {
+    spyOn(component.voteChange, 'emit');
+    
     const result = component.voteUp();
     
-    expect(testArticle.votes).toBe(initialVotes + 1);
+    expect(component.voteChange.emit).toHaveBeenCalledWith({
+      article: testArticle,
+      delta: 1
+    });
     expect(result).toBe(false); // preventDefault behavior
   });
 
-  it('should vote down', () => {
-    const initialVotes = testArticle.votes;
+  it('should emit voteChange event when voteDown is called', () => {
+    spyOn(component.voteChange, 'emit');
+    
     const result = component.voteDown();
     
-    expect(testArticle.votes).toBe(initialVotes - 1);
+    expect(component.voteChange.emit).toHaveBeenCalledWith({
+      article: testArticle,
+      delta: -1
+    });
     expect(result).toBe(false); // preventDefault behavior
   });
 
   it('should handle vote up click', () => {
-    spyOn(component, 'voteUp').and.returnValue(false);
+    spyOn(component, 'voteUp').and.callThrough();
+    spyOn(component.voteChange, 'emit');
     
     const upvoteLinks = fixture.nativeElement.querySelectorAll('a[href]') as NodeListOf<HTMLAnchorElement>;
     const upvoteLink = Array.from(upvoteLinks).find((link: HTMLAnchorElement) => 
@@ -68,10 +77,15 @@ describe('ArticleComponent', () => {
     upvoteLink!.click();
     
     expect(component.voteUp).toHaveBeenCalled();
+    expect(component.voteChange.emit).toHaveBeenCalledWith({
+      article: testArticle,
+      delta: 1
+    });
   });
 
   it('should handle vote down click', () => {
-    spyOn(component, 'voteDown').and.returnValue(false);
+    spyOn(component, 'voteDown').and.callThrough();
+    spyOn(component.voteChange, 'emit');
     
     const downvoteLinks = fixture.nativeElement.querySelectorAll('a[href]') as NodeListOf<HTMLAnchorElement>;
     const downvoteLink = Array.from(downvoteLinks).find((link: HTMLAnchorElement) => 
@@ -82,24 +96,9 @@ describe('ArticleComponent', () => {
     downvoteLink!.click();
     
     expect(component.voteDown).toHaveBeenCalled();
-  });
-
-  it('should update votes display when article changes', () => {
-    // Test using the component's vote methods directly
-    spyOn(component, 'voteUp').and.callThrough();
-    
-    // Trigger the voteUp method via click
-    const upvoteLink = fixture.nativeElement.querySelector('a[href]:has(i.arrow.up.icon)');
-    expect(upvoteLink).toBeTruthy();
-    upvoteLink!.click();
-    
-    // Verify the method was called
-    expect(component.voteUp).toHaveBeenCalled();
-    
-    // Since ChangeDetectorRef.markForCheck() should trigger update
-    fixture.detectChanges();
-    
-    const voteDisplay = fixture.nativeElement.querySelector('.value');
-    expect(voteDisplay?.textContent?.trim()).toBe('6');
+    expect(component.voteChange.emit).toHaveBeenCalledWith({
+      article: testArticle,
+      delta: -1
+    });
   });
 });

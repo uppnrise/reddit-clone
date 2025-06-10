@@ -27,4 +27,14 @@ export class AppComponent {
     link.value = '';
     return false;
   }
+
+  voteForArticle(article: Article, delta: number): void {
+    this.articles.update(articles => 
+      articles.map(a => 
+        a === article 
+          ? new Article(a.title, a.link, a.votes + delta)
+          : a
+      )
+    );
+  }
 }

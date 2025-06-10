@@ -17,6 +17,9 @@
 
 <div class="ui grid posts">
   @for (article of sortedArticles(); track article) {
-    <app-article [article]="article"> </app-article>
+    <app-article 
+      [article]="article" 
+      (voteChange)="voteForArticle($event.article, $event.delta)">
+    </app-article>
   }
 </div>
