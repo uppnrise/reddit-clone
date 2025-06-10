@@ -67,10 +67,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "upp-reddit:build:production"
+              "buildTarget": "upp-reddit:build:production"
             },
             "development": {
-              "browserTarget": "upp-reddit:build:development"
+              "buildTarget": "upp-reddit:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -78,7 +78,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "upp-reddit:build"
+            "buildTarget": "upp-reddit:build"
           }
         },
         "test": {
